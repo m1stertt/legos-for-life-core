@@ -65,12 +65,3 @@ namespace InnoTech.LegosForLife.WebApi
         }
     }
 }
-
-
-
-/*
-
-option =>
-{
-    option.UseSqlite("Data Source=main.db");
-}*/
