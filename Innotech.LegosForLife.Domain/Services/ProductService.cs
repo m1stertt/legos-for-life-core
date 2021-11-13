@@ -18,5 +18,25 @@ namespace InnoTech.LegosForLife.Domain.Services
         {
             return _productRepository.FindAll();
         }
+        
+        public Product GetProductById(int id)
+        {
+            return _productRepository.FindById(id);
+        }
+
+        public Product DeleteById(int id)
+        {
+           return  _productRepository.DeleteById(id);
+        }
+
+        public Product Update(Product product)
+        {
+            return _productRepository.Update(product);
+        }
+
+        public Product Create(Product product)
+        {
+            return _productRepository.Create(product);
+        }
     }
 }

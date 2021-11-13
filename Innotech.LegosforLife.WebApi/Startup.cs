@@ -42,6 +42,12 @@ namespace InnoTech.LegosForLife.WebApi
                 {
                     options.UseSqlite("Data Source=main.db");
                 });
+                
+            //Below will setup CORS for the application. 
+            //BEWARE that the current setup allows any origin, method and header. AKA an "Open door" policy... 
+            services.AddCors(options =>
+                options.AddDefaultPolicy(builder =>
+                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +64,8 @@ namespace InnoTech.LegosForLife.WebApi
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 
