@@ -1,11 +1,8 @@
 namespace InnoTech.LegosForLife.DataAccess.Entities
 {
-    public class ProductEntity
+    public class UserEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int OwnerId { get; set; }
-        
-        public UserEntity Owner { get; set; }
     }
 }
