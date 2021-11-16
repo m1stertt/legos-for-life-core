@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using InnoTech.LegosForLife.Core.IServices;
 using InnoTech.LegosForLife.Core.Models;
+using InnoTech.LegosForLife.Security.Model;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InnoTech.LegosForLife.WebApi.Controllers
@@ -24,6 +25,9 @@ namespace InnoTech.LegosForLife.WebApi.Controllers
             {
                 return BadRequest("A product is required to create a product in the repository");
             }
+
+            var user = HttpContext.Items["LoginUser"] as LoginUser;
+            product.OwnerId = user.Id;
 
             return Ok(_productService.Create(product));
         }
@@ -62,7 +66,8 @@ namespace InnoTech.LegosForLife.WebApi.Controllers
             {
                 return BadRequest("Correct id is needed to update a product.");
             }
-
+            var user = HttpContext.Items["LoginUser"] as LoginUser;
+            product.OwnerId = user.Id;
             
             return Ok(_productService.Update(product));
         }

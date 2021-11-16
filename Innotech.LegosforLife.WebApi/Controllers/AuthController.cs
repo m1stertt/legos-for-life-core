@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using InnoTech.LegosForLife.Security;
@@ -52,10 +53,7 @@ namespace InnoTech.LegosForLife.WebApi.Controllers
                     Name = user.UserName
                 });
             }
-
             return Unauthorized();
         }
-        
     }
-    
 }

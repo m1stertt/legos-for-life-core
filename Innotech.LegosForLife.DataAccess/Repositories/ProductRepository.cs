@@ -51,17 +51,18 @@ namespace InnoTech.LegosForLife.DataAccess.Repositories
 
         public Product Update(Product product)
         {
-            var entity = new ProductEntity()
+            var pe = _ctx.Update(new ProductEntity
             {
                 Id = product.Id,
-                Name = product.Name
-            };
-            var savedEntity = _ctx.Products.Update(entity).Entity;
+                Name = product.Name,
+                OwnerId = product.OwnerId
+            }).Entity;
             _ctx.SaveChanges();
-            return new Product()
+            return new Product
             {
-                Id = savedEntity.Id,
-                Name = savedEntity.Name
+                Id = pe.Id,
+                Name = pe.Name,
+                OwnerId = pe.OwnerId
             };
         }
 
@@ -69,14 +70,16 @@ namespace InnoTech.LegosForLife.DataAccess.Repositories
         {
             var entity = new ProductEntity()
             {
-                Name = product.Name
+                Name = product.Name,
+                OwnerId = product.OwnerId
             };
-            var savedEntity = _ctx.Add(entity).Entity;
+            var savedEntity = _ctx.Products.Add(entity).Entity;
             _ctx.SaveChanges();
             return new Product()
             {
                 Id = savedEntity.Id,
-                Name = savedEntity.Name
+                Name = savedEntity.Name,
+                OwnerId=savedEntity.OwnerId
             };
         }
     }
