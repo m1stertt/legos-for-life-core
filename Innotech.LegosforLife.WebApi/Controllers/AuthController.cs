@@ -30,7 +30,7 @@ namespace InnoTech.LegosForLife.WebApi.Controllers
             var tokenString = _authService.GenerateJwtToken(new LoginUser
             {
                 UserName = dto.Username,
-                HashedPassword = _authService.Hash(dto.Password)
+                HashedPassword = _authService.VerifyLogin(dto.Username,dto.Password)
             });
             if (string.IsNullOrEmpty(tokenString))
             {

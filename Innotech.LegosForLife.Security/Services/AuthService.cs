@@ -13,7 +13,6 @@ namespace InnoTech.LegosForLife.Security.Services
 {
     public class AuthService : IAuthService
     {
-        
         private readonly IConfiguration _configuration;
         private readonly AuthDbContext _ctx;
 
@@ -22,12 +21,9 @@ namespace InnoTech.LegosForLife.Security.Services
             _configuration = configuration;
             _ctx = ctx;
         }
-        public LoginUser IsValidUserInformation(LoginUser user)
-        {
-            return _ctx.LoginUsers.FirstOrDefault(
-                u => u.UserName.Equals(user.UserName) &&
-                     u.HashedPassword.Equals(user.HashedPassword));
-            //return user.UserName.Equals("ljuul") && user.HashedPassword.Equals("123456");
+
+        private LoginUser IsValidUserInformation(LoginUser user) {
+            return _ctx.LoginUsers.FirstOrDefault(u => u.UserName.Equals(user.UserName) && u.HashedPassword.Equals(user.HashedPassword));
         }
 
         /// <summary>
@@ -58,10 +54,34 @@ namespace InnoTech.LegosForLife.Security.Services
             return tokenHandler.WriteToken(token);
         }
 
-        public string Hash(string password)
+        public byte[] VerifyLogin(string username, string password)
         {
-            //Todo Should be hashed!!!
-            return password;
+            LoginUser user = _ctx.LoginUsers.FirstOrDefault(u => u.UserName.Equals(username));
+            if(user==null||!VerifyHash(password,user.HashedPassword,user.PasswordSalt)) return null;
+            return user.HashedPassword;
+        }
+
+        private bool VerifyHash(string password,byte[] storedHash,byte[] storedSalt)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(storedSalt))
+            {
+                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+                for (int i = 0; i < computedHash.Length; i++)
+                {
+                    if (computedHash[i] != storedHash[i]) return false;
+                }
+            }
+
+            return true;
+        }
+        
+        public static void CreateHashAndSalt(string password,out byte[] passwordHash,out byte[] salt)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            {
+                salt = hmac.Key;
+                passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+            }
         }
 
         public List<Permission> GetPermissions(int userId)

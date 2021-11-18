@@ -139,16 +139,20 @@ namespace InnoTech.LegosForLife.WebApi
                 
                 authDbContext.Database.EnsureDeleted();
                 authDbContext.Database.EnsureCreated();
+                AuthService.CreateHashAndSalt("123456", out var passwordHash, out var salt);
                 authDbContext.LoginUsers.Add(new LoginUser
                 {
                     UserName = "ljuul",
-                    HashedPassword = "123456",
+                    HashedPassword = passwordHash,
+                    PasswordSalt = salt,
                     DbUserId = 1,
                 });
+                AuthService.CreateHashAndSalt("123456", out passwordHash, out salt);
                 authDbContext.LoginUsers.Add(new LoginUser
                 {
                     UserName = "ljuul2",
-                    HashedPassword = "123456",
+                    HashedPassword = passwordHash,
+                    PasswordSalt = salt,
                     DbUserId = 2,
                 });
                 authDbContext.Permissions.AddRange(new Permission()

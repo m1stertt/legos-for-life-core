@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace InnoTech.LegosForLife.Security.Model
@@ -6,7 +7,8 @@ namespace InnoTech.LegosForLife.Security.Model
     {
         public int Id { get; set; }
         public string UserName { get; set; }
-        public string HashedPassword { get; set; }
+        public byte[] HashedPassword { get; set; }
+        public byte[] PasswordSalt { get; set; }
         
         public List<Permission> Permissions { get; set; }
 
