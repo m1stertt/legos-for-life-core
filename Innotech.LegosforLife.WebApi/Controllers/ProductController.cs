@@ -3,6 +3,8 @@ using System.IO;
 using InnoTech.LegosForLife.Core.IServices;
 using InnoTech.LegosForLife.Core.Models;
 using InnoTech.LegosForLife.Security.Model;
+using InnoTech.LegosForLife.WebApi.PolicyHandlers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InnoTech.LegosForLife.WebApi.Controllers
@@ -18,6 +20,7 @@ namespace InnoTech.LegosForLife.WebApi.Controllers
             _productService = productService ?? throw new InvalidDataException("ProductService Cannot Be Null");
         }
         
+        [Authorize(Policy=nameof(CanWriteProductsHandler))]
         [HttpPost]  
         public ActionResult<Product> Post([FromBody] Product product)
         {
@@ -48,6 +51,7 @@ namespace InnoTech.LegosForLife.WebApi.Controllers
             return Ok(_productService.GetProductById(id));
         }
         
+        [Authorize(Policy=nameof(CanWriteProductsHandler))]
         [HttpDelete("{id:int}")]
         public ActionResult<Product> DeleteById(int id)
         {
@@ -59,6 +63,7 @@ namespace InnoTech.LegosForLife.WebApi.Controllers
         }
         
 
+        [Authorize(Policy=nameof(CanWriteProductsHandler))]
         [HttpPut("{id}")]  
         public ActionResult<Product> Update(int id, [FromBody] Product product)
         {
